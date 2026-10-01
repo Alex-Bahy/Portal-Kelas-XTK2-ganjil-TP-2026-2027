@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Portal Akademik — X Teknik Ketenagalistrikan 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  /* Brand TK2 — Industrial Electric: Deep Charcoal × Electric Yellow × Steel */
+  --char:#0F1117;
+  --char2:#181C26;
+  --char3:#242938;
+  --char4:#2E3347;
+  --volt:#F5C518;
+  --volt2:#FFD740;
+  --volt3:#FFE880;
+  --steel:#3A7BD5;
+  --steel2:#5B9BF5;
+  --steel3:#A8C8FF;
+  --warning:#FF6B35;
+  --safe:#2ECC71;
+  --bg:#F4F5F8;
+  --surface:#FFFFFF;
+  --card-bg:#FAFBFC;
+  --border:#E4E7EF;
+  --border2:rgba(245,197,24,.18);
+  --text:#0F1117;
+  --muted:#6B7280;
+  --r:12px;--r2:20px;
+  --nav-h:64px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* ── CIRCUIT CANVAS (bg ambiance) ── */
+#circuit-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.035;
+}
+
+/* ── FAB BACK ── */
+.fab-back{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  display:flex;align-items:center;gap:8px;
+  background:var(--char);color:var(--volt);
+  font-size:12px;font-weight:700;
+  padding:11px 18px;border-radius:8px;
+  text-decoration:none;
+  box-shadow:0 6px 28px rgba(15,17,23,.45), 0 0 0 1px rgba(245,197,24,.20);
+  border:1px solid rgba(245,197,24,.25);
+  transition:transform .2s,box-shadow .2s,background .2s;
+  white-space:nowrap;
+  letter-spacing:.03em;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.fab-back:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(15,17,23,.55),0 0 0 1px var(--volt);background:var(--char2);}
+.fab-back svg{width:14px;height:14px;flex-shrink:0;}
+@media(max-width:480px){.fab-back{bottom:16px;right:16px;padding:9px 13px;font-size:11px;}}
+
+/* ── HERO ── */
+.hero{
+  background:var(--char);
+  position:relative;overflow:hidden;
+}
+
+/* Animated grid lines */
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(245,197,24,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(245,197,24,.06) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:gridShift 20s linear infinite;
+}
+@keyframes gridShift{from{background-position:0 0;}to{background-position:48px 48px;}}
+
+/* Voltage bolt glow */
+.hero-bolt{
+  position:absolute;
+  top:-80px;right:-60px;
+  width:clamp(220px,38vw,480px);
+  height:clamp(220px,38vw,480px);
+  pointer-events:none;
+  opacity:.12;
+}
+.hero-bolt svg{width:100%;height:100%;}
+
+/* Bottom glow */
+.hero-glow-bar{
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,var(--volt) 40%,var(--volt2) 60%,transparent 100%);
+  box-shadow:0 0 24px 4px rgba(245,197,24,.4);
+  animation:glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:.7;} 50%{opacity:1;}}
+
+/* ── NAV ── */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,4vw,52px);height:var(--nav-h);
+  border-bottom:1px solid rgba(245,197,24,.10);
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,17,23,.96);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.nav-brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
+.nav-logo{
+  width:38px;height:38px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--volt) 0%,var(--volt2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;color:var(--char);letter-spacing:-.3px;
+  font-family:'Syne',sans-serif;
+  box-shadow:0 0 16px rgba(245,197,24,.30);
+}
+.nav-school{color:rgba(255,255,255,.85);font-size:13px;font-weight:600;line-height:1.3;min-width:0;overflow:hidden;}
+.nav-school .full{display:block;}
+.nav-school .short{display:none;}
+.nav-school span{display:block;font-size:11px;font-weight:400;color:rgba(255,255,255,.35);}
+.nav-year{
+  background:rgba(245,197,24,.10);
+  border:1px solid rgba(245,197,24,.28);
+  color:var(--volt2);
+  font-size:10px;font-weight:700;
+  padding:5px 12px;border-radius:6px;
+  letter-spacing:.08em;white-space:nowrap;flex-shrink:0;margin-left:10px;
+  text-transform:uppercase;
+}
+@media(max-width:540px){
+  .nav-school .full{display:none;}
+  .nav-school .short{display:block;}
+  .nav-year{font-size:9px;padding:4px 8px;}
+}
+
+/* ── HERO BODY ── */
+.hero-body{
+  position:relative;z-index:2;
+  padding:clamp(44px,7vw,88px) clamp(16px,5vw,52px) 0;
+  max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+}
+@media(max-width:680px){.hero-body{grid-template-columns:1fr;}}
+
+.hero-left{}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,197,24,.08);
+  border:1px solid rgba(245,197,24,.22);
+  color:var(--volt2);
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 14px;border-radius:5px;margin-bottom:20px;
+}
+.eyebrow-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--volt);flex-shrink:0;
+  animation:blink 1.4s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.hero-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,6.5vw,74px);
+  font-weight:800;
+  color:#fff;
+  line-height:.98;
+  letter-spacing:-1.5px;
+  margin-bottom:18px;
+}
+.hero-title .klass{
+  display:block;
+  color:var(--volt);
+  text-shadow:0 0 40px rgba(245,197,24,.35);
+}
+.hero-sub{
+  font-size:clamp(12px,1.6vw,14px);
+  color:rgba(255,255,255,.42);
+  line-height:1.85;
+  max-width:420px;
+  font-weight:400;
+  margin-bottom:32px;
+}
+
+.hero-stats{
+  display:flex;gap:0;
+  border:1px solid rgba(245,197,24,.12);
+  border-radius:10px;
+  overflow:hidden;
+  background:rgba(255,255,255,.03);
+  width:fit-content;
+}
+.hstat{
+  padding:clamp(14px,2.5vw,20px) clamp(18px,3.5vw,32px);
+  border-right:1px solid rgba(245,197,24,.09);
+  text-align:center;
+}
+.hstat:last-child{border-right:none;}
+.hstat-n{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,4vw,34px);
+  font-weight:800;color:#fff;
+  line-height:1;
+}
+.hstat-n.accent{color:var(--volt);}
+.hstat-n.blue{color:var(--steel2);}
+.hstat-l{font-size:10px;font-weight:500;color:rgba(255,255,255,.30);text-transform:uppercase;letter-spacing:.09em;margin-top:5px;}
+
+/* Decorative voltage meter */
+.hero-meter{
+  flex-shrink:0;
+  width:clamp(120px,18vw,200px);
+  padding-bottom:24px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.meter-ring{
+  width:clamp(100px,15vw,160px);
+  height:clamp(100px,15vw,160px);
+  position:relative;
+}
+.meter-ring svg{width:100%;height:100%;}
+.meter-val{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.meter-num{
+  font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,30px);font-weight:800;color:var(--volt);
+  line-height:1;text-shadow:0 0 20px rgba(245,197,24,.4);
+}
+.meter-unit{font-size:10px;font-weight:600;color:rgba(255,255,255,.40);letter-spacing:.08em;margin-top:2px;}
+.meter-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;}
+@media(max-width:680px){.hero-meter{display:none;}}
+
+/* ── HERO WAVE ── */
+.wave{line-height:0;position:relative;z-index:2;margin-top:clamp(32px,5vw,56px);}
+.wave svg{display:block;width:100%;}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(14px,4vw,44px);position:relative;z-index:1;}
+.sec{padding:clamp(40px,5vw,68px) 0 0;}
+.sec-last{padding-bottom:clamp(60px,8vw,96px);}
+.sec-head{margin-bottom:clamp(20px,3vw,36px);}
+.sec-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+  padding:4px 12px;border-radius:5px;margin-bottom:10px;
+}
+.ey-steel{background:rgba(58,123,213,.12);color:var(--steel);border:1px solid rgba(58,123,213,.18);}
+.ey-volt{background:rgba(245,197,24,.10);color:#9A7A00;border:1px solid rgba(245,197,24,.22);}
+.ey-safe{background:rgba(46,204,113,.10);color:#1A8A4A;border:1px solid rgba(46,204,113,.20);}
+.sec-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,3.8vw,38px);
+  font-weight:800;color:var(--char);
+  line-height:1.08;margin-bottom:8px;letter-spacing:-.5px;
+}
+.sec-desc{font-size:13px;color:var(--muted);line-height:1.75;max-width:520px;font-weight:400;}
+
+/* ── DATA HERO PANEL ── */
+.data-panel{
+  background:var(--char);
+  border-radius:var(--r2);
+  padding:clamp(24px,4vw,44px) clamp(22px,4vw,52px);
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:24px;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(245,197,24,.14);
+  box-shadow:0 8px 48px rgba(15,17,23,.18), inset 0 1px 0 rgba(245,197,24,.08);
+}
+.data-panel::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 100% 50%,rgba(58,123,213,.12) 0%,transparent 60%);
+  pointer-events:none;
+}
+/* Corner bolt decoration */
+.data-panel::after{
+  content:'⚡';
+  position:absolute;bottom:-8px;right:24px;
+  font-size:72px;opacity:.05;pointer-events:none;
+  line-height:1;
+}
+.data-panel-text{position:relative;z-index:1;}
+.data-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(245,197,24,.12);
+  border:1px solid rgba(245,197,24,.28);
+  color:var(--volt2);
+  font-size:10px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  padding:4px 12px;border-radius:5px;margin-bottom:12px;
+}
+.data-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(18px,3vw,28px);
+  font-weight:800;color:#fff;
+  line-height:1.12;margin-bottom:8px;letter-spacing:-.4px;
+}
+.data-title span{color:var(--volt);}
+.data-sub{font-size:12px;color:rgba(255,255,255,.40);line-height:1.72;margin-bottom:20px;font-weight:400;}
+.data-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+.data-note{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:7px;padding:7px 12px;
+  font-size:11px;color:rgba(255,255,255,.40);font-weight:500;
+}
+.data-visual{
+  position:relative;z-index:1;
+  width:clamp(90px,12vw,145px);height:clamp(90px,12vw,145px);
+  flex-shrink:0;
+  background:rgba(245,197,24,.06);
+  border:1px solid rgba(245,197,24,.16);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;
+}
+.data-vis-icon{font-size:clamp(28px,5vw,44px);line-height:1;}
+.data-vis-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.30);text-transform:uppercase;letter-spacing:.1em;}
+.btn-unlock{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--volt) 0%,var(--volt2) 100%);
+  color:var(--char);
+  font-size:13px;font-weight:700;
+  padding:12px 22px;border-radius:8px;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:transform .15s,box-shadow .15s,opacity .15s;
+  font-family:'Space Grotesk',sans-serif;white-space:nowrap;touch-action:manipulation;
+  box-shadow:0 4px 20px rgba(245,197,24,.35),0 0 0 0 rgba(245,197,24,.4);
+}
+.btn-unlock:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,197,24,.50);opacity:.94;}
+.btn-unlock svg{width:14px;height:14px;flex-shrink:0;}
+@media(max-width:580px){.data-panel{grid-template-columns:1fr;}.data-visual{display:none;}}
+
+/* ── GROUP DIVIDER ── */
+.group-div{
+  display:flex;align-items:center;gap:10px;
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);
+  margin:clamp(28px,4vw,48px) 0 14px;
+}
+.group-div::after{content:'';flex:1;height:1px;background:var(--border);}
+.gdiv-icon{
+  width:26px;height:26px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+}
+
+/* ── SUBJECT GRID ── */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:12px;}
+
+/* ── SUBJECT CARD ── */
+.subj-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:16px 16px 14px;
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+  -webkit-tap-highlight-color:transparent;
+}
+.subj-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(15,17,23,.09);
+  border-color:rgba(245,197,24,.30);
+}
+
+/* left accent bar */
+.subj-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;
+}
+.card-u::before{background:linear-gradient(180deg,var(--steel),var(--steel2));}
+.card-k::before{background:linear-gradient(180deg,var(--volt),var(--volt2));}
+.card-l::before{background:linear-gradient(180deg,var(--safe),#52D98A);}
+
+/* Hover shimmer */
+.subj-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(135deg,rgba(245,197,24,.0) 0%,rgba(245,197,24,.03) 100%);
+  opacity:0;transition:opacity .25s;border-radius:var(--r);
+}
+.subj-card:hover::after{opacity:1;}
+
+.card-row{display:flex;align-items:flex-start;gap:12px;}
+
+/* Number chip */
+.card-num{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+  font-family:'Syne',sans-serif;letter-spacing:-.3px;
+}
+.card-u .card-num{background:rgba(58,123,213,.10);color:var(--steel);}
+.card-k .card-num{background:rgba(245,197,24,.12);color:#8A6900;}
+.card-l .card-num{background:rgba(46,204,113,.10);color:#1A8A4A;}
+
+.card-info{flex:1;min-width:0;}
+.card-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px;}
+.card-type{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.card-u .card-type{color:var(--steel);}
+.card-k .card-type{color:#9A7A00;}
+.card-l .card-type{color:#1A8A4A;}
+
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+
+/* ── LINK BUTTON ── */
+.link-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:7px;
+  font-size:11px;font-weight:700;text-decoration:none;
+  letter-spacing:.02em;
+  transition:transform .15s,opacity .15s,box-shadow .15s;
+  white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.link-btn:hover{transform:translateY(-1px);opacity:.85;}
+.link-on{background:var(--char);color:var(--volt);border:1px solid rgba(245,197,24,.25);box-shadow:0 2px 10px rgba(15,17,23,.15);}
+.link-on:hover{box-shadow:0 5px 18px rgba(15,17,23,.22),0 0 0 1px rgba(245,197,24,.35);}
+.link-off{background:#F1F3F7;color:#C0C6D4;pointer-events:none;cursor:not-allowed;border:1px solid transparent;}
+.link-btn svg{width:11px;height:11px;flex-shrink:0;}
+
+.badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:5px;letter-spacing:.06em;text-transform:uppercase;}
+.badge-on{background:#DCFCE7;color:#166534;}
+.badge-off{background:#F1F5F9;color:#94A3B8;}
+.badge-ledger{background:rgba(46,204,113,.12);color:#1A8A4A;}
+
+/* ── EDIT PANEL ── */
+.card-edit-btn{
+  position:absolute;top:12px;right:12px;
+  width:28px;height:28px;border-radius:7px;
+  background:rgba(58,123,213,.08);
+  border:1px solid rgba(58,123,213,.15);
+  color:var(--steel);
+  font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  opacity:0;transition:opacity .2s,transform .15s,background .15s;
+  z-index:5;
+}
+.subj-card:hover .card-edit-btn{opacity:1;}
+.card-edit-btn:hover{transform:scale(1.1);background:var(--steel);color:#fff;}
+.edit-panel{
+  display:none;flex-direction:column;gap:9px;
+  background:rgba(58,123,213,.07);
+  border:1.5px solid rgba(58,123,213,.18);
+  border-radius:9px;padding:11px 13px;
+  animation:slideDown .18s ease;
+}
+.edit-panel.open{display:flex;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-5px);}to{opacity:1;transform:translateY(0);}}
+.edit-panel label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--steel);}
+.edit-panel-row{display:flex;gap:6px;flex-wrap:wrap;}
+.edit-inp{
+  flex:1;min-width:120px;
+  border:1.5px solid rgba(58,123,213,.20);
+  border-radius:7px;padding:8px 10px;
+  font-size:12px;font-weight:500;
+  font-family:'Space Grotesk',sans-serif;
+  color:var(--char);outline:none;background:#fff;
+  transition:border-color .2s;-webkit-appearance:none;
+}
+.edit-inp:focus{border-color:var(--steel);}
+.edit-inp::placeholder{color:#C8D0DC;}
+.edit-save-btn{
+  padding:8px 12px;border-radius:7px;background:var(--char);color:var(--volt);
+  font-size:11px;font-weight:700;border:1px solid rgba(245,197,24,.25);cursor:pointer;white-space:nowrap;
+  font-family:'Space Grotesk',sans-serif;transition:opacity .15s,transform .15s;touch-action:manipulation;
+}
+.edit-save-btn:hover{opacity:.88;transform:translateY(-1px);}
+.edit-clear-btn{
+  padding:8px 10px;border-radius:7px;background:#FEF2F2;color:#991B1B;
+  font-size:11px;font-weight:700;border:none;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;transition:opacity .15s;touch-action:manipulation;
+}
+.edit-clear-btn:hover{opacity:.8;}
+.edit-hint{font-size:10px;color:var(--muted);line-height:1.6;}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--char);color:var(--volt);
+  padding:10px 22px;border-radius:8px;
+  font-size:12px;font-weight:700;
+  box-shadow:0 8px 32px rgba(15,17,23,.38),0 0 0 1px rgba(245,197,24,.20);
+  border:1px solid rgba(245,197,24,.22);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,transform .3s;
+  z-index:500;white-space:nowrap;
+  max-width:88vw;overflow:hidden;text-overflow:ellipsis;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── MODAL ── */
+#modal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(10,12,18,.80);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#modal.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:#fff;border-radius:20px;
+  padding:clamp(24px,4vw,44px) clamp(20px,4vw,40px) clamp(20px,3vw,36px);
+  max-width:400px;width:100%;text-align:center;
+  transform:scale(.93) translateY(16px);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative;max-height:92vh;overflow-y:auto;
+  border:1.5px solid var(--border);
+}
+#modal.open .modal-box{transform:scale(1) translateY(0);}
+.modal-close{
+  position:absolute;top:14px;right:16px;
+  background:none;border:none;cursor:pointer;
+  font-size:18px;color:#BBB;line-height:1;padding:4px;
+  -webkit-tap-highlight-color:transparent;
+}
+.modal-close:hover{color:#555;}
+.modal-icon{
+  width:60px;height:60px;border-radius:16px;margin:0 auto 18px;
+  background:linear-gradient(135deg,var(--char) 0%,var(--char3) 100%);
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  box-shadow:0 8px 24px rgba(15,17,23,.24),0 0 0 1px rgba(245,197,24,.20);
+}
+.modal-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--char);margin-bottom:7px;letter-spacing:-.4px;}
+.modal-sub{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:22px;}
+.modal-label{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--muted);margin-bottom:8px;}
+.modal-inp-wrap{position:relative;margin-bottom:14px;}
+.modal-inp{
+  width:100%;border:1.5px solid var(--border);border-radius:10px;
+  padding:14px 46px 14px 18px;
+  font-size:16px;letter-spacing:.06em;
+  font-family:'Space Grotesk',sans-serif;color:var(--char);
+  outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+.modal-inp:focus{border-color:var(--char3);}
+.modal-inp::placeholder{letter-spacing:0;color:#C0C6CC;font-size:14px;}
+.modal-eye{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;font-size:18px;color:#CCC;
+  transition:color .2s;padding:4px;
+}
+.modal-eye:hover{color:#888;}
+.modal-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--char) 0%,var(--char3) 100%);
+  border:none;border-radius:10px;padding:14px;
+  font-size:14px;font-weight:700;color:var(--volt);cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;
+  transition:transform .15s,opacity .15s,box-shadow .15s;touch-action:manipulation;
+  box-shadow:0 4px 16px rgba(15,17,23,.22),0 0 0 1px rgba(245,197,24,.15);
+}
+.modal-btn:hover{transform:translateY(-1px);opacity:.92;box-shadow:0 8px 24px rgba(15,17,23,.30);}
+.modal-err{margin-top:11px;font-size:12px;color:#DC2626;display:none;animation:shake .35s ease;}
+.modal-err.show{display:block;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--char);
+  padding:clamp(28px,4vw,48px) clamp(16px,4vw,52px);
+  text-align:center;color:rgba(255,255,255,.26);font-size:12px;line-height:2;
+  position:relative;overflow:hidden;
+}
+footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(245,197,24,.25),transparent);
+}
+footer strong{color:rgba(255,255,255,.60);}
+footer .footer-div{width:32px;height:1px;background:rgba(255,255,255,.12);margin:10px auto;}
+footer .volt-accent{color:var(--volt2);font-weight:700;}
+
+/* TOUCH */
+@media(hover:none){
+  .card-edit-btn{opacity:1;}
+  .subj-card:hover{transform:none;box-shadow:none;}
+}
+
+/* card entrance */
+.subj-card{opacity:0;transform:translateY(16px);}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 18px;
+  margin-bottom:0;
+}
+.status-item{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--muted);}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.status-dot.green{background:var(--safe);box-shadow:0 0 8px rgba(46,204,113,.5);}
+.status-dot.yellow{background:var(--volt);box-shadow:0 0 8px rgba(245,197,24,.5);}
+.status-dot.blue{background:var(--steel);box-shadow:0 0 8px rgba(58,123,213,.4);}
+.status-sep{width:1px;height:14px;background:var(--border);}
+</style>
+</head>
+<body>
+
+<!-- Ambient circuit canvas -->
+<canvas id="circuit-canvas"></canvas>
+
+<div id="toast"></div>
+
+<!-- FAB KEMBALI -->
+<a class="fab-back" href="https://alex-bahy.github.io/Dashboard-Penginputan-Nilai-Semester-Genap-TP-2025-2026/" target="_blank" rel="noopener" aria-label="Kembali ke Dashboard">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M10 3L5 8l5 5"/></svg>
+  Kembali ke Dashboard
+</a>
+
+<!-- MODAL PASSWORD -->
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()" aria-label="Tutup">✕</button>
+    <div class="modal-icon">⚡</div>
+    <div class="modal-title" id="modalTitle">Akses Wali Kelas</div>
+    <div class="modal-sub">Halaman ini khusus Wali Kelas untuk menginput dan mengelola data siswa X TK 2. Masukkan kata sandi untuk melanjutkan.</div>
+    <div class="modal-label">Kata Sandi Wali Kelas</div>
+    <div class="modal-inp-wrap">
+      <input type="password" id="pwInput" class="modal-inp" placeholder="Masukkan kata sandi…" onkeydown="if(event.key==='Enter')tryUnlock()">
+      <button class="modal-eye" onclick="togglePw()" id="eyeBtn" title="Tampilkan">👁</button>
+    </div>
+    <button class="modal-btn" onclick="tryUnlock()">⚡ &nbsp;Masuk ke Data Siswa</button>
+    <div class="modal-err" id="modalErr">⚠ Kata sandi salah. Silakan coba lagi.</div>
+  </div>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-grid"></div>
+
+  <div class="hero-bolt">
+    <svg viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="280,20 160,240 250,240 180,460 380,200 270,200 380,20" fill="#F5C518"/>
+      <polygon points="280,20 160,240 250,240 180,460 380,200 270,200 380,20" fill="url(#bgrad)" opacity=".5"/>
+      <defs>
+        <linearGradient id="bgrad" x1="160" y1="20" x2="380" y2="460" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFE880"/>
+          <stop offset="100%" stop-color="#F5C518"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="hero-glow-bar"></div>
+
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">TK2</div>
+      <div class="nav-school">
+        <span class="full">X Teknik Ketenagalistrikan 2</span>
+        <span class="short">X TK 2</span>
+        <span>SMK Negeri 1 Maluku Tengah · Portal Akademik</span>
+      </div>
+    </div>
+    <div class="nav-year">TP 2025/2026</div>
+  </nav>
+
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Portal Nilai &amp; Akademik
+      </div>
+      <h1 class="hero-title">
+        Nilai &amp; Rekap<br>
+        <span class="klass">Kelas X TK 2</span>
+      </h1>
+      <p class="hero-sub">Platform terpadu untuk input nilai dan rekap akademik semua mata pelajaran — dirancang untuk guru &amp; wali kelas X Teknik Ketenagalistrikan 2.</p>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-n accent">12<sup style="font-size:.55em;vertical-align:top;margin-top:4px;">+</sup></div>
+          <div class="hstat-l">Mata Pelajaran</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-n blue">3</div>
+          <div class="hstat-l">Kelompok Mapel</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-n">2026</div>
+          <div class="hstat-l">Tahun Pelajaran</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Voltage Meter -->
+    <div class="hero-meter">
+      <div class="meter-ring">
+        <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background ring -->
+          <circle cx="80" cy="80" r="62" stroke="rgba(255,255,255,.06)" stroke-width="10" fill="none"/>
+          <!-- Arc (220° out of 360° starting from 145° ) -->
+          <circle cx="80" cy="80" r="62" stroke="rgba(245,197,24,.12)" stroke-width="10" fill="none"
+            stroke-dasharray="241.1 148.9" stroke-dashoffset="-75" stroke-linecap="round"/>
+          <!-- Active arc -->
+          <circle cx="80" cy="80" r="62" stroke="url(#voltGrad)" stroke-width="10" fill="none"
+            stroke-dasharray="181 209" stroke-dashoffset="-75" stroke-linecap="round"
+            style="filter:drop-shadow(0 0 6px rgba(245,197,24,.6));"/>
+          <!-- Tick marks -->
+          <g stroke="rgba(255,255,255,.15)" stroke-width="1.5">
+            <line x1="80" y1="10" x2="80" y2="22"/>
+            <line x1="130" y1="26" x2="122" y2="36" transform="rotate(36,80,80)"/>
+            <line x1="148" y1="72" x2="136" y2="74" transform="rotate(72,80,80)"/>
+            <line x1="148" y1="72" x2="136" y2="74" transform="rotate(108,80,80)"/>
+            <line x1="130" y1="26" x2="122" y2="36" transform="rotate(144,80,80)"/>
+            <line x1="80" y1="10" x2="80" y2="22" transform="rotate(180,80,80)"/>
+            <line x1="130" y1="26" x2="122" y2="36" transform="rotate(216,80,80)"/>
+            <line x1="148" y1="72" x2="136" y2="74" transform="rotate(252,80,80)"/>
+          </g>
+          <defs>
+            <linearGradient id="voltGrad" gradientUnits="userSpaceOnUse" x1="18" y1="80" x2="142" y2="80">
+              <stop offset="0%" stop-color="#F5C518"/>
+              <stop offset="100%" stop-color="#FFD740"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="meter-val">
+          <div class="meter-num" id="voltNum">220</div>
+          <div class="meter-unit">VOLT AC</div>
+        </div>
+      </div>
+      <div class="meter-label">Tegangan Sistem</div>
+    </div>
+  </div>
+
+  <div class="wave">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,30 C180,58 360,2 560,26 C720,46 900,6 1080,28 C1240,46 1360,14 1440,30 L1440,60 L0,60 Z" fill="#F4F5F8"/>
+    </svg>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <!-- ── DATA SISWA ── -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="sec-eyebrow ey-volt">⚡ Data Administrasi</div>
+      <h2 class="sec-title">Data Siswa Kelas X TK 2</h2>
+      <p class="sec-desc">Halaman khusus Wali Kelas untuk input dan kelola data lengkap siswa — profil, NIS, NISN, dan catatan administratif.</p>
+    </div>
+
+    <div class="data-panel">
+      <div class="data-panel-text">
+        <div class="data-badge">🔐 Khusus Wali Kelas</div>
+        <div class="data-title">Database Siswa<br><span>X TK 2 — 2025/2026</span></div>
+        <div class="data-sub">Wali Kelas dapat menginput dan memperbarui data lengkap seluruh siswa, termasuk profil, NIS, NISN, JK, Agama, dan keterangan tambahan.</div>
+        <div class="data-actions">
+          <button class="btn-unlock" onclick="openModal()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="12" height="8" rx="2"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
+            Buka Data Siswa
+          </button>
+          <div class="data-note">🔑 Password diperlukan</div>
+        </div>
+      </div>
+      <div class="data-visual">
+        <div class="data-vis-icon">📁</div>
+        <div class="data-vis-label">Data Siswa</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NILAI MAPEL ── -->
+  <section class="sec sec-last">
+    <div class="sec-head">
+      <div class="sec-eyebrow ey-steel">📚 Kurikulum Merdeka</div>
+      <h2 class="sec-title">Nilai Mata Pelajaran</h2>
+      <p class="sec-desc">Setiap guru membuka halaman nilai sesuai mata pelajaran yang diampu. <strong style="color:var(--steel);">Klik ✏️ pada kartu untuk mengubah link.</strong></p>
+    </div>
+
+    <!-- Status bar -->
+    <div class="status-bar" style="margin-bottom:0;">
+      <div class="status-item"><span class="status-dot green"></span>Semua link aktif</div>
+      <div class="status-sep"></div>
+      <div class="status-item"><span class="status-dot yellow"></span>TP 2025/2026</div>
+      <div class="status-sep"></div>
+      <div class="status-item"><span class="status-dot blue"></span>X Teknik Ketenagalistrikan 2</div>
+    </div>
+
+    <div class="group-div">
+      <div class="gdiv-icon" style="background:rgba(58,123,213,.10);">🎓</div>
+      Mata Pelajaran Umum
+    </div>
+    <div class="subj-grid" id="grid-umum"></div>
+
+    <div class="group-div">
+      <div class="gdiv-icon" style="background:rgba(245,197,24,.12);">⚡</div>
+      Mata Pelajaran Kejuruan
+    </div>
+    <div class="subj-grid" id="grid-kejuruan"></div>
+
+    <div class="group-div">
+      <div class="gdiv-icon" style="background:rgba(46,204,113,.10);">🌿</div>
+      Mata Pelajaran Muatan Lokal
+    </div>
+    <div class="subj-grid" id="grid-mulok"></div>
+
+    <div class="group-div">
+      <div class="gdiv-icon" style="background:rgba(46,204,113,.12);">📒</div>
+      Ledger &amp; Rekap
+    </div>
+    <div class="subj-grid" id="grid-ledger"></div>
+  </section>
+
+</div>
+</main>
+
+<footer>
+  <strong>Kelas X Teknik Ketenagalistrikan 2</strong>
+  <div class="footer-div"></div>
+  Portal Akademik Guru · Tahun Pelajaran <span class="volt-accent">2025/2026</span><br>
+  <span style="font-size:11px;opacity:.6;">Data Siswa — dikelola Wali Kelas &nbsp;·&nbsp; Input Nilai — terbuka untuk semua guru</span>
+</footer>
+
+<script>
+/* ─── CIRCUIT CANVAS AMBIANCE ─── */
+(function(){
+  const cv = document.getElementById('circuit-canvas');
+  const ctx = cv.getContext('2d');
+  let W,H,nodes=[];
+
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize();window.addEventListener('resize',()=>{resize();build();});
+
+  function build(){
+    nodes=[];
+    const cols=Math.ceil(W/90)+1, rows=Math.ceil(H/90)+1;
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+      if(Math.random()<.3) nodes.push({x:c*90+Math.random()*30,y:r*90+Math.random()*30});
+    }
+  }
+  build();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#F5C518';ctx.lineWidth=1;
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[j].x-nodes[i].x,dy=nodes[j].y-nodes[i].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){
+          ctx.globalAlpha=(1-d/130)*.5;
+          ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();
+        }
+      }
+      ctx.globalAlpha=.7;
+      ctx.fillStyle='#F5C518';
+      ctx.beginPath();ctx.arc(nodes[i].x,nodes[i].y,1.5,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;
+  }
+  draw();
+})();
+
+/* ─── VOLTAGE METER ANIMATION ─── */
+let voltTarget=220,voltCurrent=0;
+(function tick(){
+  if(voltCurrent<voltTarget){
+    voltCurrent=Math.min(voltTarget,voltCurrent+4);
+    document.getElementById('voltNum').textContent=Math.round(voltCurrent);
+  }
+  requestAnimationFrame(tick);
+})();
+setInterval(()=>{
+  voltTarget=Math.floor(215+Math.random()*12); 
+},3000);
+
+/* ─── DATA ─── */
+const PASS = 'SMKBisa';
+const DATA_URL = 'https://alex-bahy.github.io/Data-Siswa-XTK2-2026/';
+const SK = 'xtk2_mapel_links_v1';
+
+const DEFAULTS = {
+  '01':'https://alex-bahy.github.io/Agama-XTK2-2026/',
+  '02':'https://alex-bahy.github.io/Pend.-Pancasila-XTK2-2026/',
+  '03':'https://alex-bahy.github.io/B.-Indonesia-XTK2-2026/',
+  '04':'https://alex-bahy.github.io/PJOK-XTK2-2026/',
+  '05':'https://alex-bahy.github.io/Sejarah-XTK2-2026/',
+  '06':'https://alex-bahy.github.io/Seni-Budaya-XTK2-2026/',
+  '07':'https://alex-bahy.github.io/Matematika-XTK2-2026/',
+  '08':'https://alex-bahy.github.io/B.-Inggris-XTK2-2026/',
+  '09':'https://alex-bahy.github.io/informatika-XTK2-2026/',
+  '10':'https://alex-bahy.github.io/Projek-IPAS-XTK2-2026/',
+  '11':'https://alex-bahy.github.io/Dasar-Program-Keahlian-XTK2-2026/',
+  '12':'https://alex-bahy.github.io/Muatan-Lokal-TK2-2026/',
+  'L1':'https://alex-bahy.github.io/Ledger-XTK2-2026/',
+};
+
+const SUBJECTS = {
+  umum:[
+    {id:'01',name:'Pendidikan Agama dan Budi Pekerti',           type:'Mapel Umum',     cls:'card-u'},
+    {id:'02',name:'Pendidikan Pancasila',                        type:'Mapel Umum',     cls:'card-u'},
+    {id:'03',name:'Bahasa Indonesia',                            type:'Mapel Umum',     cls:'card-u'},
+    {id:'04',name:'Pendidikan Jasmani, Olahraga dan Kesehatan',  type:'Mapel Umum',     cls:'card-u'},
+    {id:'05',name:'Sejarah',                                     type:'Mapel Umum',     cls:'card-u'},
+    {id:'06',name:'Seni Budaya',                                 type:'Mapel Umum',     cls:'card-u'},
+  ],
+  kejuruan:[
+    {id:'07',name:'Matematika',                                  type:'Mapel Kejuruan', cls:'card-k'},
+    {id:'08',name:'Bahasa Inggris',                              type:'Mapel Kejuruan', cls:'card-k'},
+    {id:'09',name:'Informatika',                                 type:'Mapel Kejuruan', cls:'card-k'},
+    {id:'10',name:'Projek Ilmu Pengetahuan Alam dan Sosial',     type:'Mapel Kejuruan', cls:'card-k'},
+    {id:'11',name:'Dasar-dasar Program Keahlian',                type:'Mapel Kejuruan', cls:'card-k'},
+  ],
+  mulok:[
+    {id:'12',name:'Membatik Khas Maluku',                        type:'Muatan Lokal',   cls:'card-k',mulok:true},
+  ],
+  ledger:[
+    {id:'L1',name:'Ledger Nilai — Rekap Semua Mata Pelajaran',   type:'Ledger & Rekap', cls:'card-l',ledger:true},
+  ]
+};
+
+function buildCard(s){
+  const ph = s.ledger?'https://username.github.io/ledger-XTK2/':'https://username.github.io/nama-repo/';
+  const lbl = s.ledger?'Buka Ledger':'Input Nilai';
+  const numDisplay = s.ledger?'📒':s.id;
+  const numStyle = s.mulok?'background:rgba(46,204,113,.10);color:#1A8A4A;':'';
+  const typeStyle = s.mulok?'color:#1A8A4A;':'';
+  return `<div class="subj-card ${s.cls}" id="card-${s.id}">
+<button class="card-edit-btn" onclick="toggleEdit('${s.id}')" aria-label="Edit link">✏️</button>
+<div class="card-row">
+  <div class="card-num" style="${numStyle}">${numDisplay}</div>
+  <div class="card-info">
+    <div class="card-name">${s.name}</div>
+    <div class="card-type" style="${typeStyle}">${s.type}</div>
+  </div>
+</div>
+<div class="edit-panel" id="edit-${s.id}">
+  <label>🔗 Link GitHub Pages</label>
+  <div class="edit-panel-row">
+    <input type="url" class="edit-inp" id="inp-${s.id}" placeholder="${ph}">
+    <button class="edit-save-btn" onclick="saveLink('${s.id}')">Simpan</button>
+    <button class="edit-clear-btn" onclick="clearLink('${s.id}')">✕</button>
+  </div>
+  <div class="edit-hint">Paste link GitHub Pages — tombol akan langsung aktif.</div>
+</div>
+<div class="card-foot">
+  <a href="#" class="link-btn link-off" id="btn-${s.id}" target="_blank" rel="noopener">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 8h12M9 3l5 5-5 5"/></svg>
+    ${lbl}
+  </a>
+  <span class="badge badge-off" id="badge-${s.id}">Segera</span>
+</div>
+</div>`;
+}
+
+function renderAll(){
+  Object.entries(SUBJECTS).forEach(([g,list])=>{
+    const el=document.getElementById('grid-'+g);
+    if(el) el.innerHTML=list.map(buildCard).join('');
+  });
+}
+
+function loadLinks(){try{return JSON.parse(localStorage.getItem(SK)||'{}');}catch(e){return{};}}
+function saveLinks(d){try{localStorage.setItem(SK,JSON.stringify(d));}catch(e){}}
+
+function applyLink(id,url){
+  const b=document.getElementById('btn-'+id);
+  const ba=document.getElementById('badge-'+id);
+  if(!b||!ba)return;
+  if(url){
+    b.href=url;b.className='link-btn link-on';
+    b.style.pointerEvents='';b.style.cursor='';
+    ba.textContent='Aktif ✓';ba.className='badge badge-on';
+  } else {
+    b.href='#';b.className='link-btn link-off';
+    b.style.pointerEvents='none';b.style.cursor='not-allowed';
+    ba.textContent='Segera';ba.className='badge badge-off';
+  }
+}
+
+function toggleEdit(id){
+  const p=document.getElementById('edit-'+id);
+  const i=document.getElementById('inp-'+id);
+  const was=p.classList.contains('open');
+  document.querySelectorAll('.edit-panel.open').forEach(x=>x.classList.remove('open'));
+  if(!was){
+    p.classList.add('open');
+    const l=loadLinks();
+    i.value=l[id]||DEFAULTS[id]||'';
+    setTimeout(()=>i.focus(),60);
+  }
+  i.onkeydown=e=>{
+    if(e.key==='Enter') saveLink(id);
+    if(e.key==='Escape') p.classList.remove('open');
+  };
+}
+
+function saveLink(id){
+  const i=document.getElementById('inp-'+id);
+  let u=i.value.trim();
+  if(!u){showToast('⚠️ Link tidak boleh kosong.');return;}
+  if(!u.startsWith('http')){u='https://'+u;i.value=u;}
+  const l=loadLinks();l[id]=u;saveLinks(l);
+  applyLink(id,u);
+  document.getElementById('edit-'+id).classList.remove('open');
+  showPermanentInfo(id,u);
+}
+
+function showPermanentInfo(id,url){
+  const old=document.getElementById('perm-banner');if(old)old.remove();
+  const snip="'"+id+"':'"+url+"',";
+  const banner=document.createElement('div');
+  banner.id='perm-banner';
+  banner.style.cssText='position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:400;background:#fff;border:1.5px solid #0F1117;border-radius:14px;padding:14px 18px;max-width:92vw;width:480px;box-shadow:0 8px 32px rgba(15,17,23,.18);font-family:Space Grotesk,sans-serif;';
+  banner.innerHTML='<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;"><div style="font-size:13px;font-weight:700;color:#0F1117;">⚠️ Link aktif di perangkat ini saja</div><button onclick="document.getElementById(\'perm-banner\').remove()" style="background:none;border:none;cursor:pointer;font-size:16px;color:#999;flex-shrink:0;line-height:1;">✕</button></div><div style="font-size:12px;color:#6B7280;line-height:1.65;margin-bottom:10px;">Agar link aktif di <strong style="color:#0F1117">semua HP/laptop</strong>, tambahkan baris ini ke bagian <code style="background:#F4F5F8;padding:1px 5px;border-radius:4px;font-size:11px;">DEFAULTS</code>:</div><div style="display:flex;align-items:center;gap:8px;"><code id="snip-code" style="flex:1;background:#F4F5F8;border:1px solid #E4E7EF;border-radius:7px;padding:8px 12px;font-size:12px;color:#0F1117;word-break:break-all;">'+snip+'</code><button onclick="navigator.clipboard.writeText(document.getElementById(\'snip-code\').textContent).then(()=>showToast(\'✅ Disalin!\'))" style="background:#0F1117;color:#F5C518;border:none;border-radius:7px;padding:8px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">Salin</button></div>';
+  document.body.appendChild(banner);
+  setTimeout(()=>{if(banner.parentNode)banner.remove();},14000);
+}
+
+function clearLink(id){
+  const l=loadLinks();delete l[id];saveLinks(l);
+  applyLink(id,DEFAULTS[id]||null);
+  if(DEFAULTS[id]){const i=document.getElementById('inp-'+id);if(i)i.value=DEFAULTS[id];}
+  document.getElementById('edit-'+id).classList.remove('open');
+  showToast('🗑️ Link dihapus, kembali ke default.');
+}
+
+/* ── MODAL ── */
+function openModal(){document.getElementById('modal').classList.add('open');setTimeout(()=>document.getElementById('pwInput').focus(),200);}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('pwInput').value='';document.getElementById('modalErr').classList.remove('show');}
+function togglePw(){const i=document.getElementById('pwInput'),b=document.getElementById('eyeBtn');i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'👁':'🙈';}
+function tryUnlock(){
+  const v=document.getElementById('pwInput').value,e=document.getElementById('modalErr');
+  if(v===PASS){closeModal();window.open(DATA_URL,'_blank');}
+  else{e.classList.remove('show');void e.offsetWidth;e.classList.add('show');document.getElementById('pwInput').value='';document.getElementById('pwInput').focus();}
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ── TOAST ── */
+let tt;
+function showToast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* ── INIT ── */
+renderAll();
+Object.entries(DEFAULTS).forEach(([id,url])=>applyLink(id,url));
+Object.entries(loadLinks()).forEach(([id,url])=>applyLink(id,url));
+
+/* ── SCROLL ANIMATION ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,idx)=>{
+    if(e.isIntersecting){
+      e.target.style.transition=`opacity .4s ease ${idx*.04}s, transform .4s ease ${idx*.04}s, box-shadow .2s, border-color .2s`;
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.04});
+document.querySelectorAll('.subj-card').forEach(c=>obs.observe(c));
+</script>
+</body>
+</html>
